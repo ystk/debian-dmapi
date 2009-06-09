@@ -13,7 +13,7 @@ stdenv = @GZIP=-q; export GZIP;
 options = export DEBUG=-DNDEBUG DISTRIBUTION=debian \
 	  INSTALL_USER=root INSTALL_GROUP=root ;
 checkdir = test -f debian/rules
-checkver = rm -f debian/compat && echo 5 > debian/compat
+checkver = rm -f debian/compat && echo 7 > debian/compat
 
 build: built
 built: config
@@ -31,10 +31,11 @@ config: .census
 clean:
 	@echo "== dpkg-buildpackage: clean" 1>&2
 	$(checkdir)
+	$(checkver)
 	-rm -f built .census
 	$(MAKE) distclean
 	-rm -rf $(dirdev) $(dirlib)
-	-rm -f debian/*substvars debian/files* debian/*.debhelper debian/compat
+	-rm -f debian/*substvars debian/files* debian/*.debhelper
 
 binary-indep:
 
@@ -46,6 +47,9 @@ binary-arch: checkroot built
 	$(pkgdev) $(MAKE) -C . install-dev
 	$(pkglib) $(MAKE) -C . install
 	$(pkglib) $(MAKE) -C build src-manifest
+
+	sed "s/^libdir='\/lib'$$/libdir='\/usr\/lib'/" $(dirdev)/usr/lib/libdm.la > $(dirdev)/usr/lib/libdm.la.new
+	mv $(dirdev)/usr/lib/libdm.la.new $(dirdev)/usr/lib/libdm.la
 
 	dh_installdocs
 	dh_installchangelogs

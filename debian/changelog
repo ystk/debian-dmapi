@@ -1,3 +1,13 @@
+dmapi (2.2.10-1) unstable; urgency=low
+
+  * New upstream release 
+  * Repackage as configure was twice in original tarball
+  * Standards version is 3.8.1
+  * debhelper compatibility version is 7
+  * Fix invalid libdir value in libdma.la
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Tue, 09 Jun 2009 11:38:55 +1000
+
 dmapi (2.2.8-1) unstable; urgency=low
 
   * New upstream release (closes: #402033)
